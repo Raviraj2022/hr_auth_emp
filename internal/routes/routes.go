@@ -5,6 +5,7 @@ import (
 
 	"github.com/ravirajsahu/auth_app/config"
 	"github.com/ravirajsahu/auth_app/internal/auth"
+	"github.com/ravirajsahu/auth_app/internal/middleware"
 )
 
 func Setup(router *gin.Engine) {
@@ -20,4 +21,9 @@ func Setup(router *gin.Engine) {
 		api.POST("/register", handler.Register)
 		api.POST("/login", handler.Login)
 	}
+	protected := api.Group("/")
+protected.Use(middleware.AuthMiddleware())
+{
+	protected.GET("/profile", handler.Profile)
+}
 }

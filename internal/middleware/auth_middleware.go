@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"hr-auth/pkg/jwt"
+	"github.com/ravirajsahu/auth_app/pkg/jwt"
 
 	"github.com/gin-gonic/gin"
 )

@@ -30,7 +30,7 @@ func GenerateToken(userID, email string) (string, error) {
 }
 
 
-func ValidateToken(tokenString string, secretKey string) (*Claims, error) {
+func ValidateToken(tokenString string) (*Claims, error) {
 
 	token, err := golangjwt.ParseWithClaims(
 		tokenString,

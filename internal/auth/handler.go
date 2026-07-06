@@ -72,3 +72,15 @@ func (h *Handler) Login(c *gin.Context) {
 		"data":    res,
 	})
 }
+
+func (h *Handler) Profile(c *gin.Context) {
+
+	userID := c.GetString("user_id")
+
+	email := c.GetString("email")
+
+	c.JSON(http.StatusOK, gin.H{
+		"user_id": userID,
+		"email": email,
+	})
+}
