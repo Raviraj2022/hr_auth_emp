@@ -4,6 +4,7 @@ import (
 	"errors"
     "fmt"
 	"github.com/google/uuid"
+	"github.com/ravirajsahu/auth_app/internal/department"
 )
 
 type service struct {
@@ -101,9 +102,9 @@ func (s *service) Update(id uuid.UUID, req UpdateEmployeeRequest) (*EmployeeResp
 		employee.Designation = req.Designation
 	}
 
-	if req.DepartmentID != nil {
+	
     employee.DepartmentID = req.DepartmentID
-}
+
 
 	if req.Salary != 0 {
 		employee.Salary = req.Salary

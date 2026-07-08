@@ -7,6 +7,7 @@ import (
 	"github.com/ravirajsahu/auth_app/internal/auth"
 	"github.com/ravirajsahu/auth_app/internal/department"
 	"github.com/ravirajsahu/auth_app/internal/employee"
+	 "github.com/ravirajsahu/auth_app/internal/attendance"
 	"github.com/ravirajsahu/auth_app/internal/middleware"
 )
 
@@ -36,6 +37,15 @@ func Setup(router *gin.Engine) {
 
 	employeeHandler := employee.NewHandler(employeeService)
 
+
+	attendanceRepo := attendance.NewRepository(config.DB)
+
+attendanceService := attendance.NewService(
+	attendanceRepo,
+	employeeRepo,
+)
+
+attendanceHandler := attendance.NewHandler(attendanceService)
 	// =========================
 	// API Group
 	// =========================
@@ -65,4 +75,15 @@ func Setup(router *gin.Engine) {
 	protected.GET("/departments/:id", departmentHandler.GetByID)
 	protected.PUT("/departments/:id", departmentHandler.Update)
 	protected.DELETE("/departments/:id", departmentHandler.Delete)
+
+	// Attendance
+protected.POST("/attendance/check-in", attendanceHandler.CheckIn)
+protected.POST("/attendance/check-out", attendanceHandler.CheckOut)
+
+protected.GET("/attendance", attendanceHandler.GetAll)
+protected.GET("/attendance/:id", attendanceHandler.GetByID)
+
+protected.GET("/attendance/employee/:employee_id", attendanceHandler.GetByEmployee)
+
+protected.DELETE("/attendance/:id", attendanceHandler.Delete)
 }

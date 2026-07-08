@@ -11,7 +11,7 @@ type CreateEmployeeRequest struct {
 
 	Designation string `json:"designation" binding:"required"`
 
-	DepartmentID *uuid.UUID `json:"department_id"`
+	DepartmentID uuid.UUID `json:"department_id" binding:"required"`
 
 	Salary float64 `json:"salary"`
 
@@ -23,7 +23,7 @@ type CreateEmployeeRequest struct {
 type UpdateEmployeeRequest struct {
 	Designation string `json:"designation"`
 
-	DepartmentID *uuid.UUID `json:"department_id"`
+	DepartmentID uuid.UUID `json:"department_id"`
 
 	Salary float64 `json:"salary"`
 

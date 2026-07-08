@@ -18,7 +18,7 @@ type Employee struct {
 
 	Designation string `gorm:"size:100;not null"`
 
-	DepartmentID *uuid.UUID
+	DepartmentID uuid.UUID `gorm:"type:uuid;not null"`
 	Department department.Department `gorm:"foreignKey:DepartmentID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 // Department department.Department `gorm:"foreignKey:DepartmentID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
 
