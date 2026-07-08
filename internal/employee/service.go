@@ -8,17 +8,27 @@ import (
 
 type service struct {
 	repo Repository
+	departmentRepo department.Repository
 }
 
-func NewService(repo Repository) Service {
+func NewService(repo Repository, departmentRepo department.Repository,) Service {
 	return &service{
 		repo: repo,
+		departmentRepo: departmentRepo,
 	}
 }
 
 // Create Employee
 func (s *service) Create(req CreateEmployeeRequest) (*EmployeeResponse, error) {
 
+	dept, err := s.departmentRepo.FindByID(req.DepartmentID)
+if err != nil {
+	return nil, errors.New("department not found")
+}
+
+if dept == nil {
+	return nil, errors.New("department not found")
+}
 	// Check if employee already exists for this user
 	existing, _ := s.repo.FindByUserID(req.UserID)
 	if existing != nil {
@@ -28,7 +38,7 @@ func (s *service) Create(req CreateEmployeeRequest) (*EmployeeResponse, error) {
 	employee := Employee{
 		UserID:       req.UserID,
 		Designation:  req.Designation,
-		Department:   req.Department,
+		DepartmentID: req.DepartmentID,
 		Salary:       req.Salary,
 		JoiningDate:  req.JoiningDate,
 		Status:       req.Status,
@@ -91,9 +101,9 @@ func (s *service) Update(id uuid.UUID, req UpdateEmployeeRequest) (*EmployeeResp
 		employee.Designation = req.Designation
 	}
 
-	if req.Department != "" {
-		employee.Department = req.Department
-	}
+	if req.DepartmentID != nil {
+    employee.DepartmentID = req.DepartmentID
+}
 
 	if req.Salary != 0 {
 		employee.Salary = req.Salary
@@ -135,7 +145,8 @@ func mapEmployeeResponse(emp *Employee) *EmployeeResponse {
 		Name:         emp.User.Name,
 		Email:        emp.User.Email,
 		Designation:  emp.Designation,
-		Department:   emp.Department,
+		DepartmentID: emp.DepartmentID,
+		Department:   emp.Department.Name,
 		Salary:       emp.Salary,
 		JoiningDate:  emp.JoiningDate,
 		Status:       emp.Status,

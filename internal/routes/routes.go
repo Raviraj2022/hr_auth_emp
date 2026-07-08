@@ -5,46 +5,64 @@ import (
 
 	"github.com/ravirajsahu/auth_app/config"
 	"github.com/ravirajsahu/auth_app/internal/auth"
+	"github.com/ravirajsahu/auth_app/internal/department"
 	"github.com/ravirajsahu/auth_app/internal/employee"
 	"github.com/ravirajsahu/auth_app/internal/middleware"
-	
 )
 
 func Setup(router *gin.Engine) {
 
+	// =========================
 	// Auth Module
+	// =========================
 	authRepo := auth.NewRepository(config.DB)
 	authService := auth.NewService(authRepo)
 	authHandler := auth.NewHandler(authService)
 
-	// Refresh Module
-	// refreshRepo := refresh.NewRepository(config.DB)
-	// refreshService := refresh.NewService(refreshRepo, authRepo)
-	// refreshHandler := refresh.NewHandler(refreshService)
-employeeRepo := employee.NewRepository(config.DB)
-employeeService := employee.NewService(employeeRepo)
-employeeHandler := employee.NewHandler(employeeService)
+	// =========================
+	// Department Module
+	// =========================
+	departmentRepo := department.NewRepository(config.DB)
+	departmentService := department.NewService(departmentRepo)
+	departmentHandler := department.NewHandler(departmentService)
 
+	// =========================
+	// Employee Module
+	// =========================
+	employeeRepo := employee.NewRepository(config.DB)
+
+	// Employee Service depends on Department Repository
+	employeeService := employee.NewService(employeeRepo, departmentRepo)
+
+	employeeHandler := employee.NewHandler(employeeService)
+
+	// =========================
+	// API Group
+	// =========================
 	api := router.Group("/api")
 
-	// Public Routes
+	// ---------- Public Routes ----------
 	api.POST("/register", authHandler.Register)
 	api.POST("/login", authHandler.Login)
 
-	// api.POST("/refresh", refreshHandler.Refresh)
-	// api.POST("/logout", refreshHandler.Logout)
-
-	// Protected Routes
+	// ---------- Protected Routes ----------
 	protected := api.Group("/")
 	protected.Use(middleware.AuthMiddleware())
-	{
-		protected.GET("/profile", authHandler.Profile)
-		protected.POST("/employees", employeeHandler.Create)
+
+	// Profile
+	protected.GET("/profile", authHandler.Profile)
+
+	// Employee Routes
+	protected.POST("/employees", employeeHandler.Create)
 	protected.GET("/employees", employeeHandler.GetAll)
 	protected.GET("/employees/:id", employeeHandler.GetByID)
 	protected.PUT("/employees/:id", employeeHandler.Update)
 	protected.DELETE("/employees/:id", employeeHandler.Delete)
-	}
 
-
+	// Department Routes
+	protected.POST("/departments", departmentHandler.Create)
+	protected.GET("/departments", departmentHandler.GetAll)
+	protected.GET("/departments/:id", departmentHandler.GetByID)
+	protected.PUT("/departments/:id", departmentHandler.Update)
+	protected.DELETE("/departments/:id", departmentHandler.Delete)
 }

@@ -27,6 +27,7 @@ func (r *repository) FindAll() ([]Employee, error) {
 
 	err := r.db.
 		Preload("User").
+		Preload("Department").
 		Find(&employees).Error
 
 	if err != nil {
@@ -43,6 +44,7 @@ func (r *repository) FindByID(id uuid.UUID) (*Employee, error) {
 
 	err := r.db.
 		Preload("User").
+		Preload("Department").
 		First(&employee, "id = ?", id).Error
 
 	if err != nil {
@@ -59,6 +61,7 @@ func (r *repository) FindByUserID(userID uuid.UUID) (*Employee, error) {
 
 	err := r.db.
 		Preload("User").
+		Preload("Department").
 		First(&employee, "user_id = ?", userID).Error
 
 	if err != nil {

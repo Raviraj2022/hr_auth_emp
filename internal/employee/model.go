@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/ravirajsahu/auth_app/internal/auth"
+	"github.com/ravirajsahu/auth_app/internal/department"
 	"gorm.io/gorm"
 )
 
@@ -17,7 +18,10 @@ type Employee struct {
 
 	Designation string `gorm:"size:100;not null"`
 
-	Department string `gorm:"size:100"`
+	DepartmentID *uuid.UUID
+	Department department.Department `gorm:"foreignKey:DepartmentID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
+// Department department.Department `gorm:"foreignKey:DepartmentID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+
 
 	Salary float64 `gorm:"type:numeric(12,2);default:0"`
 
