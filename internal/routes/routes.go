@@ -8,6 +8,7 @@ import (
 	"github.com/ravirajsahu/auth_app/internal/department"
 	"github.com/ravirajsahu/auth_app/internal/employee"
 	 "github.com/ravirajsahu/auth_app/internal/attendance"
+	 "github.com/ravirajsahu/auth_app/internal/leave"
 	"github.com/ravirajsahu/auth_app/internal/middleware"
 )
 
@@ -46,6 +47,16 @@ attendanceService := attendance.NewService(
 )
 
 attendanceHandler := attendance.NewHandler(attendanceService)
+
+
+leaveRepo := leave.NewRepository(config.DB)
+
+leaveService := leave.NewService(
+	leaveRepo,
+	employeeRepo,
+)
+
+leaveHandler := leave.NewHandler(leaveService)
 	// =========================
 	// API Group
 	// =========================
@@ -86,4 +97,20 @@ protected.GET("/attendance/:id", attendanceHandler.GetByID)
 protected.GET("/attendance/employee/:employee_id", attendanceHandler.GetByEmployee)
 
 protected.DELETE("/attendance/:id", attendanceHandler.Delete)
+
+
+// Leave
+protected.POST("/leaves", leaveHandler.Create)
+
+protected.GET("/leaves", leaveHandler.GetAll)
+
+protected.GET("/leaves/:id", leaveHandler.GetByID)
+
+protected.GET("/leaves/employee/:employee_id", leaveHandler.GetByEmployee)
+
+protected.PUT("/leaves/:id/approve", leaveHandler.Approve)
+
+protected.PUT("/leaves/:id/reject", leaveHandler.Reject)
+
+protected.DELETE("/leaves/:id", leaveHandler.Delete)
 }
