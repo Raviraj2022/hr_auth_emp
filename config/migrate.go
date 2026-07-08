@@ -4,11 +4,14 @@ import (
 	"log"
 
 	"github.com/ravirajsahu/auth_app/internal/auth"
+	"github.com/ravirajsahu/auth_app/internal/employee"
 )
 
 func AutoMigrate() {
 	err := DB.AutoMigrate(
 		&auth.User{},
+		&employee.Employee{},
+		
 	)
 
 	if err != nil {

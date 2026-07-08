@@ -5,15 +5,19 @@ import (
 	// "github.com/ravirajsahu/auth_app/config"
 	"github.com/ravirajsahu/auth_app/pkg/hash"
 	"github.com/ravirajsahu/auth_app/pkg/jwt"
+	
 )
 
 type service struct {
 	repo Repository
+	
 }
 
-func NewService(repo Repository) Service {
+func NewService(repo Repository,
+	) Service {
 	return &service{
 		repo: repo,
+		
 	}
 }
 func (s *service) Register(req RegisterRequest) error {
@@ -63,6 +67,8 @@ func (s *service) Login(req LoginRequest) (*LoginResponse, error) {
 if err != nil {
 	return nil, err
 }
+
+
 	// JWT will be added in next step
 	response := &LoginResponse{
 		AccessToken:  token,
