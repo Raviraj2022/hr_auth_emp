@@ -2,18 +2,17 @@ package jwt
 
 import (
 	"time"
-
-	
-
+	// "fmt"
 	golangjwt "github.com/golang-jwt/jwt/v5"
 )
-func GenerateToken(userID, email string) (string, error) {
+func GenerateToken(userID, email string, role string,) (string, error) {
 
-	expiry := time.Now().Add(15 * time.Minute)
+	expiry := time.Now().Add(24 * time.Hour)
 
 	claims := Claims{
 		UserID: userID,
 		Email:  email,
+		Role:   role,
 
 		RegisteredClaims: golangjwt.RegisteredClaims{
 			ExpiresAt: golangjwt.NewNumericDate(expiry),
@@ -21,10 +20,12 @@ func GenerateToken(userID, email string) (string, error) {
 		},
 	}
 
+	// fmt.Println(claims);
 	token := golangjwt.NewWithClaims(
 		golangjwt.SigningMethodHS256,
 		claims,
 	)
+
 
 	return token.SignedString([]byte("your-super-secret-key"))
 }
@@ -52,3 +53,4 @@ func ValidateToken(tokenString string) (*Claims, error) {
 
 	return claims, nil
 }
+

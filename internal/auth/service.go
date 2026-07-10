@@ -33,10 +33,16 @@ func (s *service) Register(req RegisterRequest) error {
 	if err != nil {
 		return err
 	}
+	role := req.Role
+
+if role == "" {
+	role = RoleEmployee
+}
 	user := User{
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: hashedPassword,
+		Role: role,
 	}
 
 	return s.repo.Create(&user)
@@ -62,6 +68,7 @@ func (s *service) Login(req LoginRequest) (*LoginResponse, error) {
 	token, err := jwt.GenerateToken(
 	user.ID.String(),
 	user.Email,
+	user.Role,
 )
 
 if err != nil {
@@ -77,6 +84,7 @@ if err != nil {
 			ID:    user.ID.String(),
 			Name:  user.Name,
 			Email: user.Email,
+			Role: user.Role,
 		},
 	}
 

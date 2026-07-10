@@ -8,6 +8,7 @@ import (
 	"github.com/ravirajsahu/auth_app/internal/department"
 	"github.com/ravirajsahu/auth_app/internal/attendance"
 	"github.com/ravirajsahu/auth_app/internal/leave"
+	"github.com/ravirajsahu/auth_app/internal/payroll"
 )
 
 func AutoMigrate() {
@@ -17,6 +18,7 @@ func AutoMigrate() {
 		&department.Department{},
 		&attendance.Attendance{},
 		&leave.Leave{},
+		&payroll.Payroll{},
 		
 	)
 
