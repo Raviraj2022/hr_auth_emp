@@ -1,6 +1,7 @@
 package payroll
 
 import (
+	// "time"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -98,7 +99,7 @@ func (r *repository) FindByEmployeeMonthYear(
 }
 
 func (r *repository) Update(payroll *Payroll) error {
-	return r.db.Save(payroll).Error
+	return r.db.Model(payroll).Select("Status", "PaidAt").Updates(payroll).Error
 }
 
 func (r *repository) Delete(id uuid.UUID) error {

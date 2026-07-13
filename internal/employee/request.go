@@ -21,11 +21,10 @@ type CreateEmployeeRequest struct {
 }
 
 type UpdateEmployeeRequest struct {
-	Designation string `json:"designation"`
-
-	DepartmentID uuid.UUID `json:"department_id"`
-
-	Salary float64 `json:"salary"`
-
-	Status string `json:"status"`
+    UserID       uuid.UUID `json:"user_id"`       // Added
+    Designation  string    `json:"designation"`
+    DepartmentID uuid.UUID `json:"department_id"`
+    Salary       float64   `json:"salary"`
+    JoiningDate  string    `json:"joining_date"`  // Added (or use time.Time)
+    Status       string    `json:"status"`
 }

@@ -96,15 +96,35 @@ func (s *service) Update(id uuid.UUID, req UpdateEmployeeRequest) (*EmployeeResp
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("Request: %+v\n", employee)
+
+	
+	// fmt.Printf("Request: %+v\n", employee)
 
 	if req.Designation != "" {
 		employee.Designation = req.Designation
 	}
 
 	
+    // Only update the department if a non-zero UUID was passed in the request
+	// fmt.Println(req.DepartmentID != uuid.Nil)
+dept, err := s.departmentRepo.FindByID(req.DepartmentID)
+if err != nil {
+    return nil, err
+}
+if dept == nil {
+    return nil, errors.New("department not found")
+}
+// fmt.Println("Dept:", dept)
+fmt.Println("Request Department:", req.DepartmentID)
+// fmt.Println("Old Department:", employee.DepartmentID)
+fmt.Println("DepartmentID:", employee.DepartmentID)
+fmt.Printf("Department: %+v\n", employee.Department)
+if req.DepartmentID != uuid.Nil {
     employee.DepartmentID = req.DepartmentID
+}
 
+// fmt.Println("New Department:", employee.DepartmentID)
+employee.DepartmentID = req.DepartmentID
 
 	if req.Salary != 0 {
 		employee.Salary = req.Salary

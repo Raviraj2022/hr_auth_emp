@@ -3,7 +3,7 @@ package payroll
 import (
 	"errors"
 	"time"
-
+    //  "fmt"
 	"github.com/google/uuid"
 
 	"github.com/ravirajsahu/auth_app/internal/attendance"
@@ -55,6 +55,8 @@ func (s *service) Generate(req GeneratePayrollRequest) (*PayrollResponse, error)
 		req.Month,
 		req.Year,
 	)
+
+	// fmt.Println(existing)
 
 	if err != nil {
 		return nil, err
@@ -179,11 +181,12 @@ func (s *service) GetByEmployee(employeeID uuid.UUID) ([]PayrollResponse, error)
 }
 
 func (s *service) MarkPaid(id uuid.UUID) error {
-
+    //  fmt.Println(id)
 	payroll, err := s.repo.FindByID(id)
 	if err != nil {
 		return err
 	}
+	// fmt.Println(payroll)
 
 	if payroll.Status == StatusPaid {
 		return errors.New("salary already paid")
@@ -194,7 +197,7 @@ func (s *service) MarkPaid(id uuid.UUID) error {
 	payroll.Status = StatusPaid
 
 	payroll.PaidAt = &now
-
+	
 	return s.repo.Update(payroll)
 }
 

@@ -72,11 +72,24 @@ func (r *repository) FindByUserID(userID uuid.UUID) (*Employee, error) {
 }
 
 // Update Employee
-func (r *repository) Update(employee *Employee) error {
+// func (r *repository) Update(employee *Employee) error {
 
 	// return r.db.Save(employee).Error
 	// return r.db.Session(&gorm.Session{FullSaveAssociations: false}).Save(employee).Error
-	return r.db.Model(employee).Omit("User").Updates(employee).Error
+	// return r.db.Model(employee).Omit("User").Updates(employee).Error
+// }
+
+func (r *repository) Update(emp *Employee) error {
+
+	return r.db.Model(&Employee{}).
+		Where("id = ?", emp.ID).
+		Updates(map[string]interface{}{
+			"designation":   emp.Designation,
+			"department_id": emp.DepartmentID,
+			"salary":        emp.Salary,
+			"joining_date":  emp.JoiningDate,
+			"status":        emp.Status,
+		}).Error
 }
 
 // Delete Employee (Soft Delete)

@@ -22,6 +22,7 @@ func (h *Handler) Generate(c *gin.Context) {
 	var req GeneratePayrollRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
+		
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
 			"message": err.Error(),

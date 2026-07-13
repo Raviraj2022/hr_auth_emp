@@ -22,13 +22,15 @@ func (r *repository) Create(user *User) error {
 func (r *repository) FindByEmail(email string) (*User, error) {
 	var user User
 
-	err := r.db.Where("email = ?", email).First(&user).Error
+	err := r.db.Where("email = ?", email).Limit(1).Find(&user).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil // User not found
-		}
-		return nil, err // Database error
-	}
+        return nil, err
+    }
+    
+    // Check if a record was actually populated in memory
+    if user.ID == uuid.Nil { 
+        return nil, nil // User not found, clean return
+    }
 
 	return &user, nil
 }
