@@ -9,6 +9,7 @@ import (
 	"github.com/ravirajsahu/auth_app/internal/employee"
 	"github.com/ravirajsahu/auth_app/internal/leave"
 	"github.com/ravirajsahu/auth_app/internal/payroll"
+	"github.com/ravirajsahu/auth_app/internal/holiday"
 )
 
 func AutoMigrate() {
@@ -19,6 +20,7 @@ func AutoMigrate() {
 		&attendance.Attendance{},
 		&leave.Leave{},
 		&payroll.Payroll{},
+		&holiday.Holiday{},
 	)
 
 	if err != nil {

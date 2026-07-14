@@ -150,6 +150,44 @@ definitions:
         description: Added
         type: string
     type: object
+  holiday.CreateHolidayRequest:
+    properties:
+      date:
+        type: string
+      description:
+        type: string
+      is_optional:
+        type: boolean
+      name:
+        type: string
+      type:
+        enum:
+        - National
+        - Festival
+        - Company
+        type: string
+    required:
+    - date
+    - name
+    - type
+    type: object
+  holiday.UpdateHolidayRequest:
+    properties:
+      date:
+        type: string
+      description:
+        type: string
+      is_optional:
+        type: boolean
+      name:
+        type: string
+      type:
+        enum:
+        - National
+        - Festival
+        - Company
+        type: string
+    type: object
   leave.CreateLeaveRequest:
     properties:
       employee_id:
@@ -683,6 +721,154 @@ paths:
       summary: Update Employee
       tags:
       - Employee
+  /holidays:
+    get:
+      description: Retrieve all holidays
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Holidays
+      tags:
+      - Holiday
+    post:
+      consumes:
+      - application/json
+      description: Create a new holiday
+      parameters:
+      - description: Holiday Details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/holiday.CreateHolidayRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Holiday
+      tags:
+      - Holiday
+  /holidays/{id}:
+    delete:
+      description: Delete a holiday
+      parameters:
+      - description: Holiday ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Holiday
+      tags:
+      - Holiday
+    get:
+      description: Retrieve holiday by ID
+      parameters:
+      - description: Holiday ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Holiday By ID
+      tags:
+      - Holiday
+    put:
+      consumes:
+      - application/json
+      description: Update holiday details
+      parameters:
+      - description: Holiday ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Holiday Details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/holiday.UpdateHolidayRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Holiday
+      tags:
+      - Holiday
+  /holidays/{year}:
+    get:
+      description: Retrieve holiday by Year
+      parameters:
+      - description: Holiday Year
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Holiday By Year
+      tags:
+      - Holiday
   /leaves:
     get:
       description: Get All Leaves

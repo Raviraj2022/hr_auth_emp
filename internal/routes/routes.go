@@ -152,6 +152,7 @@ import (
 	"github.com/ravirajsahu/auth_app/internal/leave"
 	"github.com/ravirajsahu/auth_app/internal/payroll"
     "github.com/ravirajsahu/auth_app/internal/dashboard"
+	"github.com/ravirajsahu/auth_app/internal/holiday"
 	"github.com/ravirajsahu/auth_app/internal/middleware"
 )
 
@@ -166,7 +167,7 @@ func Setup(router *gin.Engine) {
 	leaveRepo := leave.NewRepository(config.DB)
 	payrollRepo := payroll.NewRepository(config.DB)
 	dashboardRepo := dashboard.NewRepository(config.DB)
-
+    holidayRepo := holiday.NewRepository(config.DB)
 	// ========= Services =========
 
 	authService := auth.NewService(authRepo)
@@ -199,6 +200,7 @@ func Setup(router *gin.Engine) {
 
 	dashboardService := dashboard.NewService(dashboardRepo)
 
+	holidayService := holiday.NewService(holidayRepo)
 	// ========= Handlers =========
 
 	authHandler := auth.NewHandler(authService)
@@ -215,6 +217,7 @@ func Setup(router *gin.Engine) {
 
 	dashboardHandler := dashboard.NewHandler(dashboardService)
 
+	holidayHandler := holiday.NewHandler(holidayService)
 	api := router.Group("/api")
 
 	// -------------------------
@@ -248,6 +251,9 @@ func Setup(router *gin.Engine) {
 		admin.DELETE("/departments/:id", departmentHandler.Delete)
 
 		admin.DELETE("/payroll/:id", payrollHandler.Delete)
+
+		// Admin only
+admin.DELETE("/holidays/:id", holidayHandler.Delete)
 	}
 
 	// -------------------------
@@ -272,6 +278,10 @@ func Setup(router *gin.Engine) {
 
 		hr.POST("/payroll/generate", payrollHandler.Generate)
 		hr.PUT("/payroll/:id/pay", payrollHandler.MarkPaid)
+
+		hr.POST("/holidays", holidayHandler.Create)
+hr.PUT("/holidays/:id", holidayHandler.Update)
+// hr.DELETE("/holidays/:id", holidayHandler.Delete)
 	}
 
 	// -------------------------
@@ -323,5 +333,11 @@ func Setup(router *gin.Engine) {
 		employeeRoutes.GET("/payroll", payrollHandler.GetAll)
 		employeeRoutes.GET("/payroll/:id", payrollHandler.GetByID)
 		employeeRoutes.GET("/payroll/employee/:employee_id", payrollHandler.GetByEmployee)
+
+		// All authenticated users
+employeeRoutes.GET("/holidays", holidayHandler.GetAll)
+employeeRoutes.GET("/holidays/:id", holidayHandler.GetByID)
+employeeRoutes.GET("/holidays/year/:year", holidayHandler.GetByYear)
+
 	}
 }

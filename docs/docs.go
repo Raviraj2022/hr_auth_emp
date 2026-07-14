@@ -774,6 +774,242 @@ const docTemplate = `{
                 }
             }
         },
+        "/holidays": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all holidays",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Holiday"
+                ],
+                "summary": "Get All Holidays",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new holiday",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Holiday"
+                ],
+                "summary": "Create Holiday",
+                "parameters": [
+                    {
+                        "description": "Holiday Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/holiday.CreateHolidayRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/holidays/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve holiday by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Holiday"
+                ],
+                "summary": "Get Holiday By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Holiday ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update holiday details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Holiday"
+                ],
+                "summary": "Update Holiday",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Holiday ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Holiday Details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/holiday.UpdateHolidayRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a holiday",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Holiday"
+                ],
+                "summary": "Delete Holiday",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Holiday ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/holidays/{year}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve holiday by Year",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Holiday"
+                ],
+                "summary": "Get Holiday By Year",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Holiday Year",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/leaves": {
             "get": {
                 "security": [
@@ -1746,6 +1982,61 @@ const docTemplate = `{
                 "user_id": {
                     "description": "Added",
                     "type": "string"
+                }
+            }
+        },
+        "holiday.CreateHolidayRequest": {
+            "type": "object",
+            "required": [
+                "date",
+                "name",
+                "type"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "is_optional": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "National",
+                        "Festival",
+                        "Company"
+                    ]
+                }
+            }
+        },
+        "holiday.UpdateHolidayRequest": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "is_optional": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "National",
+                        "Festival",
+                        "Company"
+                    ]
                 }
             }
         },
