@@ -72,6 +72,25 @@ definitions:
       success:
         type: boolean
     type: object
+  dashboard.DashboardResponse:
+    properties:
+      active_employees:
+        type: integer
+      departments:
+        type: integer
+      paid_payrolls:
+        type: integer
+      pending_leaves:
+        type: integer
+      pending_payrolls:
+        type: integer
+      today_absent:
+        type: integer
+      today_present:
+        type: integer
+      total_employees:
+        type: integer
+    type: object
   department.CreateDepartmentRequest:
     properties:
       description:
@@ -359,6 +378,25 @@ paths:
       summary: Get Attendance By Employee
       tags:
       - Attendance
+  /dashboard:
+    get:
+      description: Get HRMS dashboard statistics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dashboard.DashboardResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Dashboard
+      tags:
+      - Dashboard
   /departments:
     get:
       description: Get All Departments
@@ -1122,9 +1160,4 @@ paths:
       summary: Register User
       tags:
       - Authentication
-securityDefinitions:
-  BearerAuth:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

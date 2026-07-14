@@ -11,7 +11,7 @@
 //	@host		localhost:8080
 //	@BasePath	/api
 
-//	@securityDefinitions.apikey	BearerAuth
+//	@securityDefinitions.bearerauth BearerAuth
 //	@in							header
 //	@name						Authorization
 

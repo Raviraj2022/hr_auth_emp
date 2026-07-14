@@ -291,6 +291,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/dashboard": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get HRMS dashboard statistics",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Dashboard",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dashboard.DashboardResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/common.APIResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/departments": {
             "get": {
                 "security": [
@@ -1602,6 +1633,35 @@ const docTemplate = `{
                 }
             }
         },
+        "dashboard.DashboardResponse": {
+            "type": "object",
+            "properties": {
+                "active_employees": {
+                    "type": "integer"
+                },
+                "departments": {
+                    "type": "integer"
+                },
+                "paid_payrolls": {
+                    "type": "integer"
+                },
+                "pending_leaves": {
+                    "type": "integer"
+                },
+                "pending_payrolls": {
+                    "type": "integer"
+                },
+                "today_absent": {
+                    "type": "integer"
+                },
+                "today_present": {
+                    "type": "integer"
+                },
+                "total_employees": {
+                    "type": "integer"
+                }
+            }
+        },
         "department.CreateDepartmentRequest": {
             "type": "object",
             "required": [
@@ -1756,13 +1816,6 @@ const docTemplate = `{
                     "minimum": 2000
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "BearerAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }`

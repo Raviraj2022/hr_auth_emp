@@ -151,7 +151,7 @@ import (
 	"github.com/ravirajsahu/auth_app/internal/employee"
 	"github.com/ravirajsahu/auth_app/internal/leave"
 	"github.com/ravirajsahu/auth_app/internal/payroll"
-
+    "github.com/ravirajsahu/auth_app/internal/dashboard"
 	"github.com/ravirajsahu/auth_app/internal/middleware"
 )
 
@@ -165,6 +165,7 @@ func Setup(router *gin.Engine) {
 	attendanceRepo := attendance.NewRepository(config.DB)
 	leaveRepo := leave.NewRepository(config.DB)
 	payrollRepo := payroll.NewRepository(config.DB)
+	dashboardRepo := dashboard.NewRepository(config.DB)
 
 	// ========= Services =========
 
@@ -196,6 +197,8 @@ func Setup(router *gin.Engine) {
 		leaveRepo,
 	)
 
+	dashboardService := dashboard.NewService(dashboardRepo)
+
 	// ========= Handlers =========
 
 	authHandler := auth.NewHandler(authService)
@@ -209,6 +212,8 @@ func Setup(router *gin.Engine) {
 	leaveHandler := leave.NewHandler(leaveService)
 
 	payrollHandler := payroll.NewHandler(payrollService)
+
+	dashboardHandler := dashboard.NewHandler(dashboardService)
 
 	api := router.Group("/api")
 
@@ -289,6 +294,9 @@ func Setup(router *gin.Engine) {
 	employeeRoutes := protected.Group("/")
 
 	{
+
+		employeeRoutes.GET("/dashboard", dashboardHandler.GetDashboard)
+
 		// Employee
 
 		employeeRoutes.GET("/employees", employeeHandler.GetAll)
