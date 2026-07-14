@@ -2,19 +2,20 @@ package employee
 
 import (
 	"errors"
-    "fmt"
+	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/ravirajsahu/auth_app/internal/department"
 )
 
 type service struct {
-	repo Repository
+	repo           Repository
 	departmentRepo department.Repository
 }
 
-func NewService(repo Repository, departmentRepo department.Repository,) Service {
+func NewService(repo Repository, departmentRepo department.Repository) Service {
 	return &service{
-		repo: repo,
+		repo:           repo,
 		departmentRepo: departmentRepo,
 	}
 }
@@ -23,13 +24,13 @@ func NewService(repo Repository, departmentRepo department.Repository,) Service 
 func (s *service) Create(req CreateEmployeeRequest) (*EmployeeResponse, error) {
 
 	dept, err := s.departmentRepo.FindByID(req.DepartmentID)
-if err != nil {
-	return nil, errors.New("department not found")
-}
+	if err != nil {
+		return nil, errors.New("department not found")
+	}
 
-if dept == nil {
-	return nil, errors.New("department not found")
-}
+	if dept == nil {
+		return nil, errors.New("department not found")
+	}
 	// Check if employee already exists for this user
 	existing, _ := s.repo.FindByUserID(req.UserID)
 	if existing != nil {
@@ -97,34 +98,32 @@ func (s *service) Update(id uuid.UUID, req UpdateEmployeeRequest) (*EmployeeResp
 		return nil, err
 	}
 
-	
 	// fmt.Printf("Request: %+v\n", employee)
 
 	if req.Designation != "" {
 		employee.Designation = req.Designation
 	}
 
-	
-    // Only update the department if a non-zero UUID was passed in the request
+	// Only update the department if a non-zero UUID was passed in the request
 	// fmt.Println(req.DepartmentID != uuid.Nil)
-dept, err := s.departmentRepo.FindByID(req.DepartmentID)
-if err != nil {
-    return nil, err
-}
-if dept == nil {
-    return nil, errors.New("department not found")
-}
-// fmt.Println("Dept:", dept)
-fmt.Println("Request Department:", req.DepartmentID)
-// fmt.Println("Old Department:", employee.DepartmentID)
-fmt.Println("DepartmentID:", employee.DepartmentID)
-fmt.Printf("Department: %+v\n", employee.Department)
-if req.DepartmentID != uuid.Nil {
-    employee.DepartmentID = req.DepartmentID
-}
+	dept, err := s.departmentRepo.FindByID(req.DepartmentID)
+	if err != nil {
+		return nil, err
+	}
+	if dept == nil {
+		return nil, errors.New("department not found")
+	}
+	// fmt.Println("Dept:", dept)
+	fmt.Println("Request Department:", req.DepartmentID)
+	// fmt.Println("Old Department:", employee.DepartmentID)
+	fmt.Println("DepartmentID:", employee.DepartmentID)
+	fmt.Printf("Department: %+v\n", employee.Department)
+	if req.DepartmentID != uuid.Nil {
+		employee.DepartmentID = req.DepartmentID
+	}
 
-// fmt.Println("New Department:", employee.DepartmentID)
-employee.DepartmentID = req.DepartmentID
+	// fmt.Println("New Department:", employee.DepartmentID)
+	employee.DepartmentID = req.DepartmentID
 
 	if req.Salary != 0 {
 		employee.Salary = req.Salary

@@ -18,6 +18,17 @@ func NewHandler(service Service) *Handler {
 }
 
 // Create Department
+//
+//	@Summary		Create Department
+//	@Description	Create a new Department
+//	@Tags			Department
+//	@Security		BearerAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		department.CreateDepartmentRequest	true	"Department"
+//	@Success		201		{object}	common.APIResponse
+//	@Failure		400		{object}	common.APIResponse
+//	@Router			/departments [post]
 func (h *Handler) Create(c *gin.Context) {
 
 	var req CreateDepartmentRequest
@@ -42,11 +53,21 @@ func (h *Handler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"success": true,
 		"message": "Department created successfully",
-		"data": department,
+		"data":    department,
 	})
 }
 
-// Get All Departments
+// Get All Departments godoc
+//
+//	@Summary		Get All Departments
+//	@Description	Get All Departments
+//	@Tags			Department
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Success		200	{object}	common.APIResponse
+//	@Failure		401	{object}	common.APIResponse
+//	@Failure		500	{object}	common.APIResponse
+//	@Router			/departments [get]
 func (h *Handler) GetAll(c *gin.Context) {
 
 	departments, err := h.service.GetAll()
@@ -60,11 +81,22 @@ func (h *Handler) GetAll(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": departments,
+		"data":    departments,
 	})
 }
 
-// Get Department By ID
+// Get All Department By ID godoc
+//
+//	@Summary		Get All Department By ID
+//	@Description	Get All department by ID
+//	@Tags			Department
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			id	path		string	true	"Department ID"
+//	@Success		200	{object}	common.APIResponse
+//	@Failure		400	{object}	common.APIResponse
+//	@Failure		404	{object}	common.APIResponse
+//	@Router			/departments/{id} [get]
 func (h *Handler) GetByID(c *gin.Context) {
 
 	id, err := uuid.Parse(c.Param("id"))
@@ -87,11 +119,24 @@ func (h *Handler) GetByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": department,
+		"data":    department,
 	})
 }
 
-// Update Department
+// Update Department godoc
+//
+//	@Summary		Update Department
+//	@Description	Update Department Details
+//	@Tags			Department
+//	@Security		BearerAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		string								true	"Department ID"
+//	@Param			request	body		department.UpdateDepartmentRequest	true	"Department"
+//	@Success		200		{object}	common.APIResponse
+//	@Failure		400		{object}	common.APIResponse
+//	@Failure		404		{object}	common.APIResponse
+//	@Router			/departments/{id} [put]
 func (h *Handler) Update(c *gin.Context) {
 
 	id, err := uuid.Parse(c.Param("id"))
@@ -125,11 +170,22 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "Department updated successfully",
-		"data": department,
+		"data":    department,
 	})
 }
 
-// Delete Department
+// Delete Department godoc
+//
+//	@Summary		Delete Department
+//	@Description	Delete Department by ID
+//	@Tags			Department
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			id	path		string	true	"Department ID"
+//	@Success		200	{object}	common.APIResponse
+//	@Failure		400	{object}	common.APIResponse
+//	@Failure		404	{object}	common.APIResponse
+//	@Router			/departments/{id} [delete]
 func (h *Handler) Delete(c *gin.Context) {
 
 	id, err := uuid.Parse(c.Param("id"))

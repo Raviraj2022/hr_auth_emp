@@ -23,12 +23,12 @@ type Attendance struct {
 
 	WorkingHours float64 `gorm:"type:numeric(5,2);default:0"`
 
-	Status string `gorm:"size:20;default:'Present'"`
+	Status           string `gorm:"size:20;default:'Present'"`
 	CheckInLatitude  *float64
-CheckInLongitude *float64
+	CheckInLongitude *float64
 
-CheckOutLatitude  *float64
-CheckOutLongitude *float64
+	CheckOutLatitude  *float64
+	CheckOutLongitude *float64
 
 	CreatedAt time.Time
 	UpdatedAt time.Time

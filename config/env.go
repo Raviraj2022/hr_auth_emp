@@ -7,12 +7,12 @@ import (
 )
 
 type Config struct {
-	AppName              string
-	Port                 string
-	DatabaseURL          string
-	JWTSecret            string
-	AccessTokenExpiry    string
-	RefreshTokenExpiry   string
+	AppName            string
+	Port               string
+	DatabaseURL        string
+	JWTSecret          string
+	AccessTokenExpiry  string
+	RefreshTokenExpiry string
 }
 
 var App Config

@@ -17,6 +17,18 @@ func NewHandler(service Service) *Handler {
 	}
 }
 
+// Create Leave
+//
+//	@Summary		Create Leave
+//	@Description	Create a new leave
+//	@Tags			Leave
+//	@Security		BearerAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		leave.CreateLeaveRequest	true	"Leave"
+//	@Success		201		{object}	common.APIResponse
+//	@Failure		400		{object}	common.APIResponse
+//	@Router			/leaves [post]
 func (h *Handler) Create(c *gin.Context) {
 
 	var req CreateLeaveRequest
@@ -41,10 +53,21 @@ func (h *Handler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"success": true,
 		"message": "Leave applied successfully",
-		"data": response,
+		"data":    response,
 	})
 }
 
+// Get All Leaves godoc
+//
+//	@Summary		Get All Leaves
+//	@Description	Get All Leaves
+//	@Tags			Leave
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Success		200	{object}	common.APIResponse
+//	@Failure		401	{object}	common.APIResponse
+//	@Failure		500	{object}	common.APIResponse
+//	@Router			/leaves [get]
 func (h *Handler) GetAll(c *gin.Context) {
 
 	response, err := h.service.GetAll()
@@ -58,10 +81,22 @@ func (h *Handler) GetAll(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": response,
+		"data":    response,
 	})
 }
 
+// Get All Leave By ID godoc
+//
+//	@Summary		Get All Leave By ID
+//	@Description	Get All leave by ID
+//	@Tags			Leave
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			id	path		string	true	"Leave ID"
+//	@Success		200	{object}	common.APIResponse
+//	@Failure		400	{object}	common.APIResponse
+//	@Failure		404	{object}	common.APIResponse
+//	@Router			/leaves/{id} [get]
 func (h *Handler) GetByID(c *gin.Context) {
 
 	id, err := uuid.Parse(c.Param("id"))
@@ -84,10 +119,22 @@ func (h *Handler) GetByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": response,
+		"data":    response,
 	})
 }
 
+// Get Leave By Employee godoc
+//
+//	@Summary		Get Leaves By Employee
+//	@Description	Get all leave requests for a specific employee
+//	@Tags			Leave
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			employee_id	path		string	true	"Employee ID"
+//	@Success		200			{object}	common.APIResponse
+//	@Failure		400			{object}	common.APIResponse
+//	@Failure		401			{object}	common.APIResponse
+//	@Router			/leaves/employee/{employee_id} [get]
 func (h *Handler) GetByEmployee(c *gin.Context) {
 
 	employeeID, err := uuid.Parse(c.Param("employee_id"))
@@ -110,10 +157,25 @@ func (h *Handler) GetByEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": response,
+		"data":    response,
 	})
 }
 
+// Approve Leave godoc
+//
+//	@Summary		Approve Leave
+//	@Description	Approve an employee leave request
+//	@Tags			Leave
+//	@Security		BearerAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		string						true	"Leave ID"
+//	@Param			request	body		UpdateLeaveStatusRequest	true	"Approval Request"
+//	@Success		200		{object}	common.APIResponse
+//	@Failure		400		{object}	common.APIResponse
+//	@Failure		401		{object}	common.APIResponse
+//	@Failure		404		{object}	common.APIResponse
+//	@Router			/leaves/{id}/approve [put]
 func (h *Handler) Approve(c *gin.Context) {
 
 	id, err := uuid.Parse(c.Param("id"))
@@ -158,6 +220,21 @@ func (h *Handler) Approve(c *gin.Context) {
 	})
 }
 
+// Reject Leave godoc
+//
+//	@Summary		Reject Leave
+//	@Description	Reject an employee leave request
+//	@Tags			Leave
+//	@Security		BearerAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		string						true	"Leave ID"
+//	@Param			request	body		UpdateLeaveStatusRequest	true	"Reject Request"
+//	@Success		200		{object}	common.APIResponse
+//	@Failure		400		{object}	common.APIResponse
+//	@Failure		401		{object}	common.APIResponse
+//	@Failure		404		{object}	common.APIResponse
+//	@Router			/leaves/{id}/reject [put]
 func (h *Handler) Reject(c *gin.Context) {
 
 	id, err := uuid.Parse(c.Param("id"))
@@ -202,6 +279,19 @@ func (h *Handler) Reject(c *gin.Context) {
 	})
 }
 
+// Delete Leave godoc
+//
+//	@Summary		Delete Leave
+//	@Description	Delete (cancel) a leave request
+//	@Tags			Leave
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			id	path		string	true	"Leave ID"
+//	@Success		200	{object}	common.APIResponse
+//	@Failure		400	{object}	common.APIResponse
+//	@Failure		401	{object}	common.APIResponse
+//	@Failure		404	{object}	common.APIResponse
+//	@Router			/leaves/{id} [delete]
 func (h *Handler) Delete(c *gin.Context) {
 
 	id, err := uuid.Parse(c.Param("id"))

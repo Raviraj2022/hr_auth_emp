@@ -8,5 +8,5 @@ type Repository interface {
 	FindByID(id uuid.UUID) (*Department, error)
 	FindByName(name string) (*Department, error)
 	Update(department *Department) error
-	Delete(id uuid.UUID) error 
+	Delete(id uuid.UUID) error
 }

@@ -39,7 +39,6 @@
 
 // 	employeeHandler := employee.NewHandler(employeeService)
 
-
 // 	attendanceRepo := attendance.NewRepository(config.DB)
 
 // attendanceService := attendance.NewService(
@@ -49,7 +48,6 @@
 
 // attendanceHandler := attendance.NewHandler(attendanceService)
 
-
 // leaveRepo := leave.NewRepository(config.DB)
 
 // leaveService := leave.NewService(
@@ -58,7 +56,6 @@
 // )
 
 // leaveHandler := leave.NewHandler(leaveService)
-
 
 // payrollRepo := payroll.NewRepository(config.DB)
 
@@ -111,7 +108,6 @@
 
 // protected.DELETE("/attendance/:id", attendanceHandler.Delete)
 
-
 // // Leave
 // protected.POST("/leaves", middleware.EmployeeOnly(), leaveHandler.Create)
 
@@ -149,8 +145,8 @@ import (
 
 	"github.com/ravirajsahu/auth_app/config"
 
-	"github.com/ravirajsahu/auth_app/internal/auth"
 	"github.com/ravirajsahu/auth_app/internal/attendance"
+	"github.com/ravirajsahu/auth_app/internal/auth"
 	"github.com/ravirajsahu/auth_app/internal/department"
 	"github.com/ravirajsahu/auth_app/internal/employee"
 	"github.com/ravirajsahu/auth_app/internal/leave"

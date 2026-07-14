@@ -74,9 +74,9 @@ func (r *repository) FindByUserID(userID uuid.UUID) (*Employee, error) {
 // Update Employee
 // func (r *repository) Update(employee *Employee) error {
 
-	// return r.db.Save(employee).Error
-	// return r.db.Session(&gorm.Session{FullSaveAssociations: false}).Save(employee).Error
-	// return r.db.Model(employee).Omit("User").Updates(employee).Error
+// return r.db.Save(employee).Error
+// return r.db.Session(&gorm.Session{FullSaveAssociations: false}).Save(employee).Error
+// return r.db.Model(employee).Omit("User").Updates(employee).Error
 // }
 
 func (r *repository) Update(emp *Employee) error {

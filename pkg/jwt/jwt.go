@@ -5,7 +5,8 @@ import (
 	// "fmt"
 	golangjwt "github.com/golang-jwt/jwt/v5"
 )
-func GenerateToken(userID, email string, role string,) (string, error) {
+
+func GenerateToken(userID, email string, role string) (string, error) {
 
 	expiry := time.Now().Add(24 * time.Hour)
 
@@ -26,10 +27,8 @@ func GenerateToken(userID, email string, role string,) (string, error) {
 		claims,
 	)
 
-
 	return token.SignedString([]byte("your-super-secret-key"))
 }
-
 
 func ValidateToken(tokenString string) (*Claims, error) {
 
@@ -53,4 +52,3 @@ func ValidateToken(tokenString string) (*Claims, error) {
 
 	return claims, nil
 }
-

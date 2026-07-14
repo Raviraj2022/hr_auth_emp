@@ -17,8 +17,8 @@ type EmployeeResponse struct {
 
 	Designation string `json:"designation"`
 
-    DepartmentID uuid.UUID `json:"department_id"`
-	Department string `json:"department"`
+	DepartmentID uuid.UUID `json:"department_id"`
+	Department   string    `json:"department"`
 
 	Salary float64 `json:"salary"`
 

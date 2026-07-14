@@ -16,6 +16,17 @@ func NewHandler(service Service) *Handler {
 	}
 }
 
+// Register godoc
+//
+//	@Summary		Register User
+//	@Description	Register a new user
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		RegisterRequest	true	"Register Request"
+//	@Success		201		{object}	Response
+//	@Failure		400		{object}	Response
+//	@Router			/register [post]
 func (h *Handler) Register(c *gin.Context) {
 
 	var req RegisterRequest
@@ -45,6 +56,18 @@ func (h *Handler) Register(c *gin.Context) {
 	})
 }
 
+// Login godoc
+//
+//	@Summary		Login
+//	@Description	Login user
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		LoginRequest	true	"Login Request"
+//	@Success		200		{object}	Response
+//	@Failure		400		{object}	Response
+//	@Failure		401		{object}	Response
+//	@Router			/login [post]
 func (h *Handler) Login(c *gin.Context) {
 
 	var req LoginRequest
@@ -73,6 +96,16 @@ func (h *Handler) Login(c *gin.Context) {
 	})
 }
 
+// Profile godoc
+//
+//	@Summary		Get Profile
+//	@Description	Get logged-in user profile
+//	@Tags			Authentication
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Success		200	{object}	Response
+//	@Failure		401	{object}	Response
+//	@Router			/profile [get]
 func (h *Handler) Profile(c *gin.Context) {
 
 	userID := c.GetString("user_id")
@@ -81,6 +114,6 @@ func (h *Handler) Profile(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"user_id": userID,
-		"email": email,
+		"email":   email,
 	})
 }

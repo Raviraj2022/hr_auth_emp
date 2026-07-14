@@ -1,0 +1,1130 @@
+basePath: /api
+definitions:
+  attendance.CheckInRequest:
+    properties:
+      employee_id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    required:
+    - employee_id
+    - latitude
+    - longitude
+    type: object
+  attendance.CheckOutRequest:
+    properties:
+      employee_id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    required:
+    - employee_id
+    - latitude
+    - longitude
+    type: object
+  auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 3
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  auth.Response:
+    properties:
+      data: {}
+      error: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  common.APIResponse:
+    properties:
+      data: {}
+      error: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  department.CreateDepartmentRequest:
+    properties:
+      description:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      status:
+        type: string
+    required:
+    - name
+    type: object
+  department.UpdateDepartmentRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      status:
+        type: string
+    type: object
+  employee.CreateEmployeeRequest:
+    properties:
+      department_id:
+        type: string
+      designation:
+        type: string
+      joining_date:
+        type: string
+      salary:
+        type: number
+      status:
+        type: string
+      user_id:
+        type: string
+    required:
+    - department_id
+    - designation
+    - joining_date
+    - user_id
+    type: object
+  employee.UpdateEmployeeRequest:
+    properties:
+      department_id:
+        type: string
+      designation:
+        type: string
+      joining_date:
+        description: Added (or use time.Time)
+        type: string
+      salary:
+        type: number
+      status:
+        type: string
+      user_id:
+        description: Added
+        type: string
+    type: object
+  leave.CreateLeaveRequest:
+    properties:
+      employee_id:
+        type: string
+      from_date:
+        type: string
+      leave_type:
+        type: string
+      reason:
+        type: string
+      to_date:
+        type: string
+    required:
+    - employee_id
+    - from_date
+    - leave_type
+    - reason
+    - to_date
+    type: object
+  leave.UpdateLeaveStatusRequest:
+    properties:
+      remarks:
+        type: string
+    type: object
+  payroll.GeneratePayrollRequest:
+    properties:
+      allowances:
+        type: number
+      bonus:
+        type: number
+      deductions:
+        type: number
+      employee_id:
+        type: string
+      month:
+        maximum: 12
+        minimum: 1
+        type: integer
+      tax:
+        type: number
+      year:
+        maximum: 2100
+        minimum: 2000
+        type: integer
+    required:
+    - employee_id
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: ravi@example.com
+    name: Raviraj Sahu
+  description: HRMS Backend API using Go, Gin, GORM & PostgreSQL.
+  license:
+    name: MIT
+  termsOfService: http://swagger.io/terms/
+  title: HRMS API
+  version: "1.0"
+paths:
+  /attendance:
+    get:
+      description: Get all attendance records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Attendance
+      tags:
+      - Attendance
+  /attendance/{id}:
+    delete:
+      description: Delete attendance record
+      parameters:
+      - description: Attendance ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Attendance
+      tags:
+      - Attendance
+    get:
+      description: Get attendance by ID
+      parameters:
+      - description: Attendance ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Attendance By ID
+      tags:
+      - Attendance
+  /attendance/check-in:
+    post:
+      consumes:
+      - application/json
+      description: Employee check in
+      parameters:
+      - description: Check In
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/attendance.CheckInRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Check In
+      tags:
+      - Attendance
+  /attendance/check-out:
+    put:
+      consumes:
+      - application/json
+      description: Employee check out
+      parameters:
+      - description: Check Out
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/attendance.CheckOutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Check Out
+      tags:
+      - Attendance
+  /attendance/employee/{employee_id}:
+    get:
+      description: Get attendance by employee
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Attendance By Employee
+      tags:
+      - Attendance
+  /departments:
+    get:
+      description: Get All Departments
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Departments
+      tags:
+      - Department
+    post:
+      consumes:
+      - application/json
+      description: Create a new Department
+      parameters:
+      - description: Department
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/department.CreateDepartmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Department
+      tags:
+      - Department
+  /departments/{id}:
+    delete:
+      description: Delete Department by ID
+      parameters:
+      - description: Department ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Department
+      tags:
+      - Department
+    get:
+      description: Get All department by ID
+      parameters:
+      - description: Department ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Department By ID
+      tags:
+      - Department
+    put:
+      consumes:
+      - application/json
+      description: Update Department Details
+      parameters:
+      - description: Department ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Department
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/department.UpdateDepartmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Department
+      tags:
+      - Department
+  /employees:
+    get:
+      description: Get All employees
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Employees
+      tags:
+      - Employee
+    post:
+      consumes:
+      - application/json
+      description: Create a new employee
+      parameters:
+      - description: Employee
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/employee.CreateEmployeeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Employee
+      tags:
+      - Employee
+  /employees/{id}:
+    delete:
+      description: Delete Employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Employee
+      tags:
+      - Employee
+    get:
+      description: Get All employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Employee By ID
+      tags:
+      - Employee
+    put:
+      consumes:
+      - application/json
+      description: Update Employee Details
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Employee
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/employee.UpdateEmployeeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Employee
+      tags:
+      - Employee
+  /leaves:
+    get:
+      description: Get All Leaves
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Leaves
+      tags:
+      - Leave
+    post:
+      consumes:
+      - application/json
+      description: Create a new leave
+      parameters:
+      - description: Leave
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/leave.CreateLeaveRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Leave
+      tags:
+      - Leave
+  /leaves/{id}:
+    delete:
+      description: Delete (cancel) a leave request
+      parameters:
+      - description: Leave ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Leave
+      tags:
+      - Leave
+    get:
+      description: Get All leave by ID
+      parameters:
+      - description: Leave ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Leave By ID
+      tags:
+      - Leave
+  /leaves/{id}/approve:
+    put:
+      consumes:
+      - application/json
+      description: Approve an employee leave request
+      parameters:
+      - description: Leave ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Approval Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/leave.UpdateLeaveStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Approve Leave
+      tags:
+      - Leave
+  /leaves/{id}/reject:
+    put:
+      consumes:
+      - application/json
+      description: Reject an employee leave request
+      parameters:
+      - description: Leave ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Reject Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/leave.UpdateLeaveStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Reject Leave
+      tags:
+      - Leave
+  /leaves/employee/{employee_id}:
+    get:
+      description: Get all leave requests for a specific employee
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Leaves By Employee
+      tags:
+      - Leave
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login user
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/auth.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.Response'
+      summary: Login
+      tags:
+      - Authentication
+  /payroll:
+    get:
+      description: Get all payroll records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Payrolls
+      tags:
+      - Payroll
+  /payroll/{id}:
+    delete:
+      description: Delete a payroll record
+      parameters:
+      - description: Payroll ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Payroll
+      tags:
+      - Payroll
+    get:
+      description: Get payroll details by payroll ID
+      parameters:
+      - description: Payroll ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Payroll By ID
+      tags:
+      - Payroll
+  /payroll/{id}/pay:
+    put:
+      description: Mark a payroll as paid
+      parameters:
+      - description: Payroll ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Mark Payroll as Paid
+      tags:
+      - Payroll
+  /payroll/employee/{employee_id}:
+    get:
+      description: Get payroll history of an employee
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Payroll By Employee
+      tags:
+      - Payroll
+  /payroll/generate:
+    post:
+      consumes:
+      - application/json
+      description: Generate payroll for an employee
+      parameters:
+      - description: Generate Payroll Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/payroll.GeneratePayrollRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Generate Payroll
+      tags:
+      - Payroll
+  /ping:
+    get:
+      responses:
+        "200":
+          description: pong
+          schema:
+            type: string
+      summary: Ping
+      tags:
+      - Test
+  /profile:
+    get:
+      description: Get logged-in user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Profile
+      tags:
+      - Authentication
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/auth.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/auth.Response'
+      summary: Register User
+      tags:
+      - Authentication
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

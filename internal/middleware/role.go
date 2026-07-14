@@ -9,14 +9,14 @@ import (
 )
 
 func RequireRoles(roles ...string) gin.HandlerFunc {
-    //   fmt.Println(roles);
+	//   fmt.Println(roles);
 	return func(c *gin.Context) {
 
 		role := c.GetString("role")
 		// fmt.Println(role);
 
 		for _, r := range roles {
-            // fmt.Println(role == r)
+			// fmt.Println(role == r)
 			if role == r {
 				c.Next()
 				return

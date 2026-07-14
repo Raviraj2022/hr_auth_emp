@@ -52,7 +52,6 @@ func (r *repository) FindByID(id uuid.UUID) (*Leave, error) {
 	return &leave, nil
 }
 
-
 func (r *repository) FindByEmployee(employeeID uuid.UUID) ([]Leave, error) {
 
 	var leaves []Leave
@@ -72,7 +71,7 @@ func (r *repository) FindByEmployee(employeeID uuid.UUID) ([]Leave, error) {
 }
 
 func (r *repository) Update(leave *Leave) error {
-	return r.db.Model(leave).Omit("Employee", "Employee.User").Updates(leave).Error 
+	return r.db.Model(leave).Omit("Employee", "Employee.User").Updates(leave).Error
 }
 
 func (r *repository) Delete(id uuid.UUID) error {

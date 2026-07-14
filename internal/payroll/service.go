@@ -3,14 +3,14 @@ package payroll
 import (
 	"errors"
 	"time"
-    //  "fmt"
+
+	//  "fmt"
 	"github.com/google/uuid"
 
 	"github.com/ravirajsahu/auth_app/internal/attendance"
 	"github.com/ravirajsahu/auth_app/internal/employee"
 	"github.com/ravirajsahu/auth_app/internal/leave"
 )
-
 
 type service struct {
 	repo Repository
@@ -21,7 +21,6 @@ type service struct {
 
 	leaveRepo leave.Repository
 }
-
 
 func NewService(
 	repo Repository,
@@ -181,7 +180,7 @@ func (s *service) GetByEmployee(employeeID uuid.UUID) ([]PayrollResponse, error)
 }
 
 func (s *service) MarkPaid(id uuid.UUID) error {
-    //  fmt.Println(id)
+	//  fmt.Println(id)
 	payroll, err := s.repo.FindByID(id)
 	if err != nil {
 		return err
@@ -197,7 +196,7 @@ func (s *service) MarkPaid(id uuid.UUID) error {
 	payroll.Status = StatusPaid
 
 	payroll.PaidAt = &now
-	
+
 	return s.repo.Update(payroll)
 }
 

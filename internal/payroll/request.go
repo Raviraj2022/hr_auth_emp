@@ -15,5 +15,5 @@ type GeneratePayrollRequest struct {
 
 	Deductions float64 `json:"deductions"`
 
-	Tax float64 `json:"tax"` 
+	Tax float64 `json:"tax"`
 }

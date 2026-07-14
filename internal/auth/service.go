@@ -5,19 +5,16 @@ import (
 	// "github.com/ravirajsahu/auth_app/config"
 	"github.com/ravirajsahu/auth_app/pkg/hash"
 	"github.com/ravirajsahu/auth_app/pkg/jwt"
-	
 )
 
 type service struct {
 	repo Repository
-	
 }
 
 func NewService(repo Repository,
-	) Service {
+) Service {
 	return &service{
 		repo: repo,
-		
 	}
 }
 func (s *service) Register(req RegisterRequest) error {
@@ -35,14 +32,14 @@ func (s *service) Register(req RegisterRequest) error {
 	}
 	role := req.Role
 
-if role == "" {
-	role = RoleEmployee
-}
+	if role == "" {
+		role = RoleEmployee
+	}
 	user := User{
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: hashedPassword,
-		Role: role,
+		Role:     role,
 	}
 
 	return s.repo.Create(&user)
@@ -66,15 +63,14 @@ func (s *service) Login(req LoginRequest) (*LoginResponse, error) {
 	}
 
 	token, err := jwt.GenerateToken(
-	user.ID.String(),
-	user.Email,
-	user.Role,
-)
+		user.ID.String(),
+		user.Email,
+		user.Role,
+	)
 
-if err != nil {
-	return nil, err
-}
-
+	if err != nil {
+		return nil, err
+	}
 
 	// JWT will be added in next step
 	response := &LoginResponse{
@@ -84,7 +80,7 @@ if err != nil {
 			ID:    user.ID.String(),
 			Name:  user.Name,
 			Email: user.Email,
-			Role: user.Role,
+			Role:  user.Role,
 		},
 	}
 

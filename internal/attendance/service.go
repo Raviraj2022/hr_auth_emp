@@ -69,7 +69,6 @@ func (s *service) CheckIn(req CheckInRequest) (*AttendanceResponse, error) {
 	return s.mapAttendanceResponse(attendance, emp.User.Name), nil
 }
 
-
 func (s *service) CheckOut(req CheckOutRequest) (*AttendanceResponse, error) {
 
 	now := time.Now()
@@ -123,7 +122,6 @@ func (s *service) CheckOut(req CheckOutRequest) (*AttendanceResponse, error) {
 	return s.mapAttendanceResponse(attendance, emp.User.Name), nil
 }
 
-
 func (s *service) GetAll() ([]AttendanceResponse, error) {
 
 	records, err := s.repo.FindAll()
@@ -143,7 +141,6 @@ func (s *service) GetAll() ([]AttendanceResponse, error) {
 	return response, nil
 }
 
-
 func (s *service) GetByID(id uuid.UUID) (*AttendanceResponse, error) {
 
 	record, err := s.repo.FindByID(id)
@@ -153,7 +150,6 @@ func (s *service) GetByID(id uuid.UUID) (*AttendanceResponse, error) {
 
 	return s.mapAttendanceResponse(record, record.Employee.User.Name), nil
 }
-
 
 func (s *service) GetByEmployee(employeeID uuid.UUID) ([]AttendanceResponse, error) {
 
@@ -173,7 +169,6 @@ func (s *service) GetByEmployee(employeeID uuid.UUID) ([]AttendanceResponse, err
 
 	return response, nil
 }
-
 
 func (s *service) Delete(id uuid.UUID) error {
 
@@ -203,10 +198,10 @@ func (s *service) mapAttendanceResponse(
 
 		CheckOut: a.CheckOut,
 
-		CheckInLatitude: a.CheckInLatitude,
+		CheckInLatitude:  a.CheckInLatitude,
 		CheckInLongitude: a.CheckInLongitude,
 
-		CheckOutLatitude: a.CheckOutLatitude,
+		CheckOutLatitude:  a.CheckOutLatitude,
 		CheckOutLongitude: a.CheckOutLongitude,
 
 		WorkingHours: a.WorkingHours,

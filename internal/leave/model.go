@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	StatusPending  = "Pending"
-	StatusApproved = "Approved"
-	StatusRejected = "Rejected"
+	StatusPending   = "Pending"
+	StatusApproved  = "Approved"
+	StatusRejected  = "Rejected"
 	StatusCancelled = "Cancelled"
 )
 

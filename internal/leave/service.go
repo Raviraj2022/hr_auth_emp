@@ -18,7 +18,7 @@ func NewService(
 	employeeRepo employee.Repository,
 ) Service {
 	return &service{
-		repo: repo,
+		repo:         repo,
 		employeeRepo: employeeRepo,
 	}
 }
@@ -52,8 +52,6 @@ func (s *service) Create(req CreateLeaveRequest) (*LeaveResponse, error) {
 
 	return s.mapResponse(leave, emp.User.Name), nil
 }
-
-
 
 func (s *service) GetAll() ([]LeaveResponse, error) {
 
@@ -148,7 +146,6 @@ func (s *service) Reject(
 
 	return s.repo.Update(leave)
 }
-
 
 func (s *service) Delete(id uuid.UUID) error {
 

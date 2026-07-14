@@ -5,20 +5,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type repository struct{
+type repository struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) Repository{
+func NewRepository(db *gorm.DB) Repository {
 	return &repository{
-		db : db,
+		db: db,
 	}
 }
 
 func (r *repository) Create(department *Department) error {
 	return r.db.Create(department).Error
 }
-
 
 func (r *repository) FindAll() ([]Department, error) {
 
@@ -44,7 +43,6 @@ func (r *repository) FindByID(id uuid.UUID) (*Department, error) {
 	return &department, nil
 }
 
-
 func (r *repository) FindByName(name string) (*Department, error) {
 
 	var department Department
@@ -67,7 +65,6 @@ func (r *repository) Update(department *Department) error {
 		"status":      department.Status,
 	}).Error
 }
-
 
 func (r *repository) Delete(id uuid.UUID) error {
 

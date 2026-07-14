@@ -1,3 +1,20 @@
+//	@title			HRMS API
+//	@version		1.0
+//	@description	HRMS Backend API using Go, Gin, GORM & PostgreSQL.
+//	@termsOfService	http://swagger.io/terms/
+
+//	@contact.name	Raviraj Sahu
+//	@contact.email	ravi@example.com
+
+//	@license.name	MIT
+
+//	@host		localhost:8080
+//	@BasePath	/api
+
+//	@securityDefinitions.apikey	BearerAuth
+//	@in							header
+//	@name						Authorization
+
 package main
 
 import (
@@ -7,6 +24,11 @@ import (
 
 	"github.com/ravirajsahu/auth_app/config"
 	"github.com/ravirajsahu/auth_app/internal/routes"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/ravirajsahu/auth_app/docs"
 )
 
 func main() {
@@ -28,14 +50,13 @@ func main() {
 	// 	})
 	// })
 
-routes.Setup(router)
+	routes.Setup(router)
 
-router.Run(":" + config.App.Port)
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	log.Printf("Server running on port %s", config.App.Port)
 
-	err := router.Run(":" + config.App.Port)
-	if err != nil {
+	if err := router.Run(":" + config.App.Port); err != nil {
 		log.Fatal(err)
 	}
 }

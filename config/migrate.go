@@ -3,10 +3,10 @@ package config
 import (
 	"log"
 
-	"github.com/ravirajsahu/auth_app/internal/auth"
-	"github.com/ravirajsahu/auth_app/internal/employee"
-	"github.com/ravirajsahu/auth_app/internal/department"
 	"github.com/ravirajsahu/auth_app/internal/attendance"
+	"github.com/ravirajsahu/auth_app/internal/auth"
+	"github.com/ravirajsahu/auth_app/internal/department"
+	"github.com/ravirajsahu/auth_app/internal/employee"
 	"github.com/ravirajsahu/auth_app/internal/leave"
 	"github.com/ravirajsahu/auth_app/internal/payroll"
 )
@@ -19,7 +19,6 @@ func AutoMigrate() {
 		&attendance.Attendance{},
 		&leave.Leave{},
 		&payroll.Payroll{},
-		
 	)
 
 	if err != nil {
