@@ -153,6 +153,7 @@ import (
 	"github.com/ravirajsahu/auth_app/internal/payroll"
     "github.com/ravirajsahu/auth_app/internal/dashboard"
 	"github.com/ravirajsahu/auth_app/internal/holiday"
+	"github.com/ravirajsahu/auth_app/internal/shift"
 	"github.com/ravirajsahu/auth_app/internal/middleware"
 )
 
@@ -168,6 +169,7 @@ func Setup(router *gin.Engine) {
 	payrollRepo := payroll.NewRepository(config.DB)
 	dashboardRepo := dashboard.NewRepository(config.DB)
     holidayRepo := holiday.NewRepository(config.DB)
+	shiftRepo := shift.NewRepository(config.DB)
 	// ========= Services =========
 
 	authService := auth.NewService(authRepo)
@@ -201,6 +203,7 @@ func Setup(router *gin.Engine) {
 	dashboardService := dashboard.NewService(dashboardRepo)
 
 	holidayService := holiday.NewService(holidayRepo)
+	shiftService := shift.NewService(shiftRepo)
 	// ========= Handlers =========
 
 	authHandler := auth.NewHandler(authService)
@@ -218,6 +221,9 @@ func Setup(router *gin.Engine) {
 	dashboardHandler := dashboard.NewHandler(dashboardService)
 
 	holidayHandler := holiday.NewHandler(holidayService)
+
+    shiftHandler := shift.NewHandler(shiftService)
+
 	api := router.Group("/api")
 
 	// -------------------------
@@ -254,6 +260,9 @@ func Setup(router *gin.Engine) {
 
 		// Admin only
 admin.DELETE("/holidays/:id", holidayHandler.Delete)
+
+// Shift
+admin.DELETE("/shifts/:id", shiftHandler.Delete)
 	}
 
 	// -------------------------
@@ -282,6 +291,10 @@ admin.DELETE("/holidays/:id", holidayHandler.Delete)
 		hr.POST("/holidays", holidayHandler.Create)
 hr.PUT("/holidays/:id", holidayHandler.Update)
 // hr.DELETE("/holidays/:id", holidayHandler.Delete)
+
+// Shift
+hr.POST("/shifts", shiftHandler.Create)
+hr.PUT("/shifts/:id", shiftHandler.Update)
 	}
 
 	// -------------------------
@@ -338,6 +351,11 @@ hr.PUT("/holidays/:id", holidayHandler.Update)
 employeeRoutes.GET("/holidays", holidayHandler.GetAll)
 employeeRoutes.GET("/holidays/:id", holidayHandler.GetByID)
 employeeRoutes.GET("/holidays/year/:year", holidayHandler.GetByYear)
+
+
+// Shift
+employeeRoutes.GET("/shifts", shiftHandler.GetAll)
+employeeRoutes.GET("/shifts/:id", shiftHandler.GetByID)
 
 	}
 }

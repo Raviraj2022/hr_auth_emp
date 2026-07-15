@@ -235,6 +235,36 @@ definitions:
     required:
     - employee_id
     type: object
+  shift.CreateShiftRequest:
+    properties:
+      description:
+        type: string
+      endTime:
+        type: string
+      graceMinutes:
+        type: integer
+      name:
+        type: string
+      startTime:
+        type: string
+      workingHours:
+        type: number
+    type: object
+  shift.UpdateShiftRequest:
+    properties:
+      description:
+        type: string
+      end_time:
+        type: string
+      grace_minutes:
+        type: integer
+      name:
+        type: string
+      start_time:
+        type: string
+      working_hours:
+        type: number
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -1346,4 +1376,136 @@ paths:
       summary: Register User
       tags:
       - Authentication
+  /shifts:
+    get:
+      description: Get all shifts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get All Shifts
+      tags:
+      - Shift
+    post:
+      consumes:
+      - application/json
+      description: Create a new shift
+      parameters:
+      - description: Shift
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/shift.CreateShiftRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Shift
+      tags:
+      - Shift
+  /shifts/{id}:
+    delete:
+      description: Delete shift by id
+      parameters:
+      - description: Shift ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Shift
+      tags:
+      - Shift
+    get:
+      description: Get shift by id
+      parameters:
+      - description: Shift ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Shift By ID
+      tags:
+      - Shift
+    put:
+      consumes:
+      - application/json
+      description: Update an existing shift
+      parameters:
+      - description: Shift ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Shift
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/shift.UpdateShiftRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/common.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Shift
+      tags:
+      - Shift
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

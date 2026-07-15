@@ -11,10 +11,9 @@
 //	@host		localhost:8080
 //	@BasePath	/api
 
-//	@securityDefinitions.bearerauth BearerAuth
-//	@in							header
-//	@name						Authorization
-
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 package main
 
 import (
