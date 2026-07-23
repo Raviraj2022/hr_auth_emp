@@ -18,6 +18,8 @@ package main
 
 import (
 	"log"
+	"time"
+	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
 
@@ -42,6 +44,41 @@ func main() {
 
 	// Create Gin server
 	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+    AllowOrigins: []string{
+        "http://localhost:3000", // Next.js
+        "http://localhost:5173", // Vite
+    },
+
+// 	AllowOrigins: []string{
+//     "https://hrms.yourcompany.com",
+//     "https://admin.yourcompany.com",
+// }
+
+    AllowMethods: []string{
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS",
+    },
+
+    AllowHeaders: []string{
+        "Origin",
+        "Content-Type",
+        "Authorization",
+    },
+
+    ExposeHeaders: []string{
+        "Content-Length",
+    },
+
+    AllowCredentials: true,
+
+    MaxAge: 12 * time.Hour,
+}))
 
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.JSON(200, gin.H{
